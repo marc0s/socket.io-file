@@ -212,7 +212,13 @@ function SocketIOFile(socket, options) {
 				return;
 			}
 
-			var writeStream = uploadingFiles[id].writeStream;
+			var writeStream;
+
+			try {
+				writeStream = uploadingFiles[id].writeStream;
+			} catch (err) {
+				return sendError(err);
+			}
 
 			function write() {
 				let result = (uploadingFiles[id].wrote + chunk.length) > (self.maxFileSize);
